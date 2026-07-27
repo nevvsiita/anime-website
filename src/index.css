@@ -818,18 +818,20 @@ html, body {
 
 .row-wrap {
   position: relative;
-  overflow: hidden;
+  width: 100%;
   margin-bottom: 2rem;
 }
 
 .row {
   display: flex;
-  gap: 12px;
+  gap: 1.25rem;
   overflow-x: auto;
-  padding: 0.5rem 0 1rem;
+  padding: 0.75rem 0.5rem 1.25rem 0.5rem;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   scroll-behavior: smooth;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .row::-webkit-scrollbar {
@@ -838,29 +840,31 @@ html, body {
 
 .row-spacer {
   flex-shrink: 0;
-  width: 4px;
+  width: 1.5rem;
+  min-width: 1.5rem;
   pointer-events: none;
 }
 
 .row-arrow {
   position: absolute;
-  top: 45%;
+  top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
-  width: 36px;
-  height: 36px;
+  z-index: 40;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: rgba(14, 10, 26, 0.85);
+  background: rgba(14, 10, 26, 0.92);
   border: 1px solid var(--border-glow);
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: var(--fuchsia-main);
+  font-size: 1.4rem;
+  font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition-smooth);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
   opacity: 0;
 }
 
@@ -868,19 +872,20 @@ html, body {
   opacity: 1;
 }
 
-.row-arrow:hover {
-  background: var(--fuchsia-main);
-  border-color: var(--fuchsia-main);
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 0 15px rgba(240, 171, 252, 0.4);
+.row-arrow:hover:not(:disabled) {
+  background: var(--gradient-neon);
+  color: white;
+  border-color: transparent;
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: var(--shadow-neon-hover);
 }
 
 .row-arrow.left {
-  left: 8px;
+  left: -0.75rem;
 }
 
 .row-arrow.right {
-  right: 8px;
+  right: -0.75rem;
 }
 
 .row-arrow:disabled {
@@ -1574,8 +1579,9 @@ html, body {
   position: relative;
   display: flex;
   align-items: center;
-  margin: 0 -3rem;
-  padding: 0 3rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .row {
@@ -1584,8 +1590,9 @@ html, body {
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 0.75rem 0.5rem;
+  padding: 0.75rem 0.5rem 1.25rem 0.5rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .row::-webkit-scrollbar {
@@ -1627,24 +1634,24 @@ html, body {
 }
 
 .row-arrow.left {
-  left: 0.25rem;
+  left: -0.75rem;
 }
 
 .row-arrow.right {
-  right: 0.25rem;
+  right: -0.75rem;
 }
 
 /* Comprehensive Mobile & Tablet Responsive Design System */
 @media (max-width: 900px) {
   .row-wrap {
-    margin: 0 -1rem;
-    padding: 0 1rem;
+    margin: 0;
+    padding: 0;
   }
   .row-arrow.left {
-    left: -0.5rem;
+    left: 0rem;
   }
   .row-arrow.right {
-    right: -0.5rem;
+    right: 0rem;
   }
   .watch-layout {
     grid-template-columns: 1fr !important;

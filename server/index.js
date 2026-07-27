@@ -58,6 +58,10 @@ app.post('/api/auth/register', (req, res) => {
     return res.status(400).json({ error: 'Por favor completa todos los campos' });
   }
 
+  if (username.trim().includes('@')) {
+    return res.status(400).json({ error: 'El nombre de usuario no puede contener el símbolo "@" ni ser un correo electrónico.' });
+  }
+
   const db = loadDb();
   
   const emailExists = db.users.some(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());

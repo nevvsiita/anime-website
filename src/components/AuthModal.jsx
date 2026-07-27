@@ -18,6 +18,20 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+
+    // Pre-validation: Do not allow emails or '@' in the username field
+    if (!isLogin) {
+      const trimmedUser = username.trim();
+      if (!trimmedUser || !email.trim() || !password.trim()) {
+        setErrorMsg('Por favor completa todos los campos para registrarte.');
+        return;
+      }
+      if (trimmedUser.includes('@')) {
+        setErrorMsg('El nombre de usuario no puede ser un correo electrónico ni contener el símbolo "@".');
+        return;
+      }
+    }
+
     setLoading(true);
 
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
@@ -80,22 +94,18 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
           const cleanEmail = email.trim().toLowerCase();
           const cleanUsername = username.trim().toLowerCase();
 
-          if (!cleanUsername || !cleanEmail || !password.trim()) {
-            throw new Error('Por favor completa todos los campos para registrarte.');
-          }
-
           const emailExists = storedUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail) ||
                             (activeUser && activeUser.email && activeUser.email.toLowerCase() === cleanEmail);
 
           if (emailExists) {
-            throw new Error('Este correo electrónico ya está registrado. Por favor inicia sesión.');
+            throw new Error('Este correo electrónico ya está registrado. Debes iniciar sesión con tu cuenta.');
           }
 
           const usernameExists = storedUsers.some(u => u.username && u.username.toLowerCase() === cleanUsername) ||
                                (activeUser && activeUser.username && activeUser.username.toLowerCase() === cleanUsername);
 
           if (usernameExists) {
-            throw new Error('Este nombre de usuario ya está registrado.');
+            throw new Error('Este nombre de usuario ya está registrado. Debes iniciar sesión.');
           }
 
           const newUser = {
@@ -126,7 +136,18 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
       setEmail('');
       setPassword('');
     } catch (err) {
-      setErrorMsg(err.message || 'Error al procesar el registro');
+      setErrorMsg(err.message || 'Error al procesar la solicitud');
+
+      if (!isLogin && err.message && (
+        err.message.includes('registrado') || 
+        err.message.includes('existe') || 
+        err.message.includes('ya está') ||
+        err.message.includes('iniciar sesión')
+      )) {
+        setTimeout(() => {
+          setIsLogin(true);
+        }, 1300);
+      }
     } finally {
       setLoading(false);
     }
