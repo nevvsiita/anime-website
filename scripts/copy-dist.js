@@ -28,6 +28,13 @@ function copyRecursiveSync(src, dest) {
 try {
   if (fs.existsSync(distDir)) {
     console.log('📦 Copying dist build output to repository root for Render 100% compatibility...');
+    
+    // Clean old assets folder at root to remove stale CSS/JS bundle files
+    const assetsDir = path.join(rootDir, 'assets');
+    if (fs.existsSync(assetsDir)) {
+      fs.rmSync(assetsDir, { recursive: true, force: true });
+    }
+
     copyRecursiveSync(distDir, rootDir);
     console.log('✅ Dist build files copied to root successfully!');
   }

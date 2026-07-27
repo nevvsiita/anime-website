@@ -128,7 +128,7 @@ export default function Hero({ featuredAnime, featuredAnimes = [], onWatch, curr
               <span>{t.watchNow}</span>
             </button>
 
-            {/* Visual Slide Position Indicators (Read-Only / Non-interactive) */}
+            {/* Visual Slide Position Indicators */}
             {slides.length > 1 && (
               <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', pointerEvents: 'none', userSelect: 'none' }}>
                 {slides.map((slide, idx) => (
@@ -148,6 +148,31 @@ export default function Hero({ featuredAnime, featuredAnimes = [], onWatch, curr
             )}
           </div>
         </div>
+
+        {/* Floating Poster Cover Thumbnails on Right Side */}
+        {slides.length > 1 && (
+          <div className="hero-floating-thumbs">
+            {slides.map((slide, idx) => {
+              const isActive = idx === currentIndex;
+              return (
+                <div
+                  key={slide.id}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`hero-thumb-item ${isActive ? 'active' : ''}`}
+                  title={slide.title}
+                >
+                  <img 
+                    src={slide.coverUrl || slide.backupCoverUrl} 
+                    alt={slide.title}
+                    referrerPolicy="no-referrer"
+                    className="hero-thumb-img"
+                  />
+                  <div className="hero-thumb-badge">{slide.title}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Embedded Keyframes for Smooth Slide Right and 10s Progress Bar */}
         <style>{`
