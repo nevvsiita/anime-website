@@ -275,13 +275,13 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
             backdropFilter: 'blur(25px)',
             WebkitBackdropFilter: 'blur(25px)',
             borderRadius: isExpanded ? '24px' : '9999px',
-            padding: isExpanded ? '28px 32px' : '12px 28px',
+            padding: isExpanded ? '28px 32px' : '8px 20px',
             width: '100%',
-            maxWidth: isExpanded ? '440px' : '280px',
+            maxWidth: isExpanded ? '440px' : '230px',
             marginTop: '16px',
             boxShadow: isExpanded 
               ? '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(167, 139, 250, 0.25)' 
-              : '0 0 35px rgba(101, 113, 214, 0.75), 0 10px 30px rgba(167, 139, 250, 0.5)',
+              : '0 0 25px rgba(101, 113, 214, 0.7), 0 8px 20px rgba(167, 139, 250, 0.45)',
             cursor: !isExpanded ? 'pointer' : 'default',
             transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
             overflow: 'hidden'
@@ -292,12 +292,12 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.5rem',
+              gap: '0.4rem',
               color: 'white',
               fontFamily: 'var(--font-baloo)',
-              fontSize: '1.02rem',
+              fontSize: '0.88rem',
               fontWeight: 800,
-              letterSpacing: '0.02em',
+              letterSpacing: '0.01em',
               whiteSpace: 'nowrap'
             }}>
               <span>{t.signInOrRegister || 'Registrarse / Iniciar Sesión'}</span>
