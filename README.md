@@ -7,6 +7,12 @@
   [![Vite](https://img.shields.io/badge/Vite-8.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
   [![Jikan API](https://img.shields.io/badge/Jikan_API-MyAnimeList-2E51A2)](https://jikan.moe/)
   [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+  <br />
+
+  [![Live Demo](https://img.shields.io/badge/🌐_Demo_en_Vivo-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://anime-website-rxhv.onrender.com/)
+
+  ### 🌐 **[https://anime-website-rxhv.onrender.com/](https://anime-website-rxhv.onrender.com/)**
 </div>
 
 ---
@@ -35,6 +41,8 @@ Una plataforma web de transmisión y exploración de anime moderna, rápida, ele
 ---
 
 ## 🚀 Despliegue en Producción (Render.com)
+
+🔗 **URL del sitio activo:** [https://anime-website-rxhv.onrender.com/](https://anime-website-rxhv.onrender.com/)
 
 El proyecto incluye el archivo [`render.yaml`](./render.yaml) para despliegue automático en 1 clic en Render:
 
