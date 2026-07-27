@@ -14,27 +14,41 @@ import AuthPage from './components/AuthPage';
 import { animeData, getLocalizedAnime } from './data/animeData';
 import { TRANSLATIONS } from './data/translations.js';
 
-// Custom User Video Intro Component with Real-Time Green Screen Chroma Key Removal
+// Custom User Video Intro Component with Reverse Playback and AnimeGL Neon Color Replacement
 function CustomUserVideoIntro({ onComplete }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [fadeOut, setFadeOut] = useState(false);
 
-  const handleEnded = () => {
-    setFadeOut(true);
-    setTimeout(onComplete, 600);
-  };
-
   useEffect(() => {
     let animId;
+    let reverseInterval;
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
 
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-    // Attempt video playback
-    video.play().catch(() => {});
+    // Handle reverse playback
+    const startReversePlayback = () => {
+      if (!video.duration) return;
+      video.pause();
+      video.currentTime = video.duration;
+
+      const step = 0.033; // FPS step
+      reverseInterval = setInterval(() => {
+        if (video.currentTime > step) {
+          video.currentTime -= step;
+        } else {
+          clearInterval(reverseInterval);
+          setFadeOut(true);
+          setTimeout(onComplete, 500);
+        }
+      }, 33);
+    };
+
+    video.addEventListener('loadedmetadata', startReversePlayback);
+    if (video.duration) startReversePlayback();
 
     const renderLoop = () => {
       if (video.videoWidth && video.videoHeight) {
@@ -53,9 +67,19 @@ function CustomUserVideoIntro({ onComplete }) {
           const g = data[i + 1];
           const b = data[i + 2];
 
-          // Green screen chroma key condition
-          if (g > 65 && g > r * 1.1 && g > b * 1.1) {
+          // 1. Green screen chroma key condition
+          if (g > 60 && g > r * 1.08 && g > b * 1.08) {
             data[i + 3] = 0; // Transparent
+          } 
+          // 2. Replace white / bright pixels with AnimeGL neon pastel gradient colors (#f0abfc / #a78bfa)
+          else if (r > 150 && g > 150 && b > 150) {
+            const brightness = (r + g + b) / 3;
+            const factor = brightness / 255;
+
+            // Brand Neon Pastel Colors (#f0abfc fuchsia / #6571d6 indigo)
+            data[i] = Math.min(255, Math.floor(240 * factor));     // Red
+            data[i + 1] = Math.min(255, Math.floor(171 * factor)); // Green
+            data[i + 2] = Math.min(255, Math.floor(252 * factor)); // Blue
           }
         }
 
@@ -67,7 +91,7 @@ function CustomUserVideoIntro({ onComplete }) {
 
     animId = requestAnimationFrame(renderLoop);
 
-    // Fallback timer matching video length
+    // Fallback timer
     const timer = setTimeout(() => {
       setFadeOut(true);
       setTimeout(onComplete, 600);
@@ -75,7 +99,9 @@ function CustomUserVideoIntro({ onComplete }) {
 
     return () => {
       cancelAnimationFrame(animId);
+      if (reverseInterval) clearInterval(reverseInterval);
       clearTimeout(timer);
+      if (video) video.removeEventListener('loadedmetadata', startReversePlayback);
     };
   }, [onComplete]);
 
