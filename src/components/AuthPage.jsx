@@ -268,6 +268,7 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
         <div 
           onClick={() => !isExpanded && setIsExpanded(true)}
           style={{
+            position: 'relative',
             background: isExpanded 
               ? 'rgba(14, 10, 26, 0.95)' 
               : '#6571D6',
@@ -285,6 +286,38 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
             overflow: isExpanded ? 'visible' : 'hidden'
           }}
         >
+          {/* Minimize Close Button */}
+          {isExpanded && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded(false);
+              }}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: 'rgba(255, 255, 255, 0.75)',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                fontWeight: 700,
+                transition: 'all 0.2s ease',
+                zIndex: 10
+              }}
+              title="Minimizar"
+            >
+              ✕
+            </button>
+          )}
+
           {!isExpanded ? (
             <div style={{
               display: 'flex',
@@ -306,6 +339,7 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
                 fontSize: '1.85rem',
                 fontWeight: 800,
                 marginBottom: '26px',
+                paddingRight: '30px',
                 color: '#fff',
                 fontFamily: 'var(--font-baloo)',
                 textAlign: 'left'
