@@ -269,9 +269,9 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           onClick={() => !isExpanded && setIsExpanded(true)}
           style={{
             background: isExpanded 
-              ? 'rgba(14, 10, 26, 0.88)' 
-              : 'rgba(255, 255, 255, 0.08)',
-            border: isExpanded ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.25)',
+              ? 'rgba(14, 10, 26, 0.95)' 
+              : '#6571D6',
+            border: isExpanded ? '1px solid rgba(255, 255, 255, 0.12)' : 'none',
             backdropFilter: 'blur(25px)',
             WebkitBackdropFilter: 'blur(25px)',
             borderRadius: isExpanded ? '24px' : '9999px',
