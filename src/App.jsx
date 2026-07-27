@@ -39,16 +39,59 @@ function CustomUserVideoIntro({ onComplete }) {
 
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-    // Handle reverse playback
-    const startReversePlayback = () => {
-      if (!video || !video.duration) return;
-      video.pause();
-      video.currentTime = video.duration;
+    const renderFrame = () => {
+      if (!video || !video.videoWidth || !video.videoHeight || !canvas || !ctx) return;
 
-      const step = 0.033; // FPS step
+      if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      }
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = frame.data;
+      const len = data.length;
+
+      for (let i = 0; i < len; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+
+        // 1. Green screen chroma key condition (croma verde transparente)
+        if (g > 60 && g > r * 1.08 && g > b * 1.08) {
+          data[i + 3] = 0; // Transparente
+        } 
+        // 2. Replace white / bright pixels with AnimeGL neon pastel gradient colors (#f0abfc / #a78bfa)
+        else if (r > 150 && g > 150 && b > 150) {
+          const brightness = (r + g + b) / 3;
+          const factor = brightness / 255;
+
+          // Brand Neon Pastel Colors (#f0abfc fuchsia / #6571d6 indigo)
+          data[i] = Math.min(255, Math.floor(240 * factor));     // Red
+          data[i + 1] = Math.min(255, Math.floor(171 * factor)); // Green
+          data[i + 2] = Math.min(255, Math.floor(252 * factor)); // Blue
+        }
+      }
+
+      ctx.putImageData(frame, 0, 0);
+    };
+
+    // Smooth Reverse Video Engine: Step currentTime backwards on each seeked / frame step
+    let isReversing = false;
+
+    const startReversePlayback = () => {
+      if (!video || isReversing) return;
+      isReversing = true;
+      video.pause();
+
+      const duration = video.duration || 2.5;
+      video.currentTime = Math.max(0, duration - 0.05);
+
+      const fpsStep = 0.033; // ~30 FPS step
       reverseInterval = setInterval(() => {
-        if (video && video.currentTime > step) {
-          video.currentTime -= step;
+        if (video && video.currentTime > fpsStep) {
+          video.currentTime -= fpsStep;
+          renderFrame();
         } else {
           clearInterval(reverseInterval);
           handleEnded();
@@ -57,59 +100,28 @@ function CustomUserVideoIntro({ onComplete }) {
     };
 
     video.addEventListener('loadedmetadata', startReversePlayback);
+    video.addEventListener('canplaythrough', startReversePlayback);
     if (video.duration) startReversePlayback();
 
-    const renderLoop = () => {
-      if (video && video.videoWidth && video.videoHeight) {
-        if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-        }
-
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = frame.data;
-        const len = data.length;
-
-        for (let i = 0; i < len; i += 4) {
-          const r = data[i];
-          const g = data[i + 1];
-          const b = data[i + 2];
-
-          // 1. Green screen chroma key condition
-          if (g > 60 && g > r * 1.08 && g > b * 1.08) {
-            data[i + 3] = 0; // Transparent
-          } 
-          // 2. Replace white / bright pixels with AnimeGL neon pastel gradient colors (#f0abfc / #a78bfa)
-          else if (r > 150 && g > 150 && b > 150) {
-            const brightness = (r + g + b) / 3;
-            const factor = brightness / 255;
-
-            // Brand Neon Pastel Colors (#f0abfc fuchsia / #6571d6 indigo)
-            data[i] = Math.min(255, Math.floor(240 * factor));     // Red
-            data[i + 1] = Math.min(255, Math.floor(171 * factor)); // Green
-            data[i + 2] = Math.min(255, Math.floor(252 * factor)); // Blue
-          }
-        }
-
-        ctx.putImageData(frame, 0, 0);
-      }
-
-      animId = requestAnimationFrame(renderLoop);
+    const animLoop = () => {
+      renderFrame();
+      animId = requestAnimationFrame(animLoop);
     };
-
-    animId = requestAnimationFrame(renderLoop);
+    animId = requestAnimationFrame(animLoop);
 
     // Fallback safety timer
     const timer = setTimeout(() => {
       handleEnded();
-    }, 3000);
+    }, 3200);
 
     return () => {
       cancelAnimationFrame(animId);
       if (reverseInterval) clearInterval(reverseInterval);
       clearTimeout(timer);
-      if (video) video.removeEventListener('loadedmetadata', startReversePlayback);
+      if (video) {
+        video.removeEventListener('loadedmetadata', startReversePlayback);
+        video.removeEventListener('canplaythrough', startReversePlayback);
+      }
     };
   }, [onComplete]);
 
