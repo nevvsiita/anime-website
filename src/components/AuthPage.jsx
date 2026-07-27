@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TRANSLATIONS } from '../data/translations.js';
 import { LANGS } from '../data/languages.jsx';
-import SakuraPetals from './SakuraPetals.jsx';
 
 export default function AuthPage({ onAuthSuccess, initialMode = 'register', currentLang = 'es', onLangChange }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -142,8 +141,6 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
       overflowY: 'auto',
       fontFamily: "'Baloo 2', 'Karla', sans-serif"
     }}>
-      {/* Dynamic Animated Falling Sakura Petals Background */}
-      <SakuraPetals count={32} />
       {/* Top Bar Language Selector Dropdown (Identical to Header.jsx) */}
       <div 
         style={{
