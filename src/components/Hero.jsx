@@ -149,30 +149,23 @@ export default function Hero({ featuredAnime, featuredAnimes = [], onWatch, curr
           </div>
         </div>
 
-        {/* Floating Poster Cover Thumbnails on Right Side */}
-        {slides.length > 1 && (
-          <div className="hero-floating-thumbs">
-            {slides.map((slide, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <div
-                  key={slide.id}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`hero-thumb-item ${isActive ? 'active' : ''}`}
-                  title={slide.title}
-                >
-                  <img 
-                    src={slide.coverUrl || slide.backupCoverUrl} 
-                    alt={slide.title}
-                    referrerPolicy="no-referrer"
-                    className="hero-thumb-img"
-                  />
-                  <div className="hero-thumb-badge">{slide.title}</div>
-                </div>
-              );
-            })}
+        {/* Active Featured Anime Poster Cover on Right Side */}
+        <div 
+          key={activeAnime.id + '_cover'} 
+          className="hero-poster-card"
+          onClick={() => onWatch(activeAnime, 1)}
+          title={activeAnime.title}
+        >
+          <img 
+            src={activeAnime.coverUrl || activeAnime.backupCoverUrl} 
+            alt={activeAnime.title}
+            referrerPolicy="no-referrer"
+            className="hero-poster-img"
+          />
+          <div className="hero-poster-overlay">
+            <span className="hero-poster-title">{activeAnime.title}</span>
           </div>
-        )}
+        </div>
 
         {/* Embedded Keyframes for Smooth Slide Right and 10s Progress Bar */}
         <style>{`
