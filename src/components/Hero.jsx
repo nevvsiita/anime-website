@@ -162,9 +162,6 @@ export default function Hero({ featuredAnime, featuredAnimes = [], onWatch, curr
             referrerPolicy="no-referrer"
             className="hero-poster-img"
           />
-          <div className="hero-poster-overlay">
-            <span className="hero-poster-title">{activeAnime.title}</span>
-          </div>
         </div>
 
         {/* Embedded Keyframes for Smooth Slide Right and 10s Progress Bar */}
