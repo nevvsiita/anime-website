@@ -55,18 +55,19 @@ function authenticateToken(req, res, next) {
 app.post('/api/auth/register', (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
-    return res.status(400).json({ error: 'All fields are required' });
+    return res.status(400).json({ error: 'Por favor completa todos los campos' });
   }
 
   const db = loadDb();
   
-  const userExists = db.users.some(
-    u => u.email.toLowerCase() === email.toLowerCase() || 
-         u.username.toLowerCase() === username.toLowerCase()
-  );
+  const emailExists = db.users.some(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());
+  if (emailExists) {
+    return res.status(400).json({ error: 'Este correo electrónico ya está registrado. Por favor inicia sesión.' });
+  }
 
-  if (userExists) {
-    return res.status(400).json({ error: 'Username or Email already registered' });
+  const usernameExists = db.users.some(u => u.username && u.username.toLowerCase() === username.trim().toLowerCase());
+  if (usernameExists) {
+    return res.status(400).json({ error: 'Este nombre de usuario ya está registrado.' });
   }
 
   const newUser = {

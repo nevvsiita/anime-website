@@ -57,8 +57,14 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           const data = await res.json();
           userData = data.user;
           tokenData = data.token;
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || 'Este correo electrónico o usuario ya está registrado.');
         }
       } catch (e) {
+        if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch')) {
+          throw e;
+        }
         console.warn('Backend offline, using local database auth');
       }
 
@@ -80,16 +86,21 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           tokenData = `token_${Date.now()}_${foundUser.id}`;
         } else {
           // Register Mode
-          if (!username.trim() || !email.trim() || !password) {
+          const cleanEmail = email.trim().toLowerCase();
+          const cleanUsername = username.trim().toLowerCase();
+
+          if (!cleanUsername || !cleanEmail || !password) {
             throw new Error('Por favor completa todos los campos.');
           }
 
-          const existingUser = storedUsers.find(
-            u => u.email.toLowerCase() === email.trim().toLowerCase() || u.username.toLowerCase() === username.trim().toLowerCase()
-          );
+          const emailExists = storedUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail);
+          if (emailExists) {
+            throw new Error('Este correo electrónico ya está registrado. Por favor inicia sesión.');
+          }
 
-          if (existingUser) {
-            throw new Error('El usuario o correo electrónico ya existe. Inicia sesión.');
+          const usernameExists = storedUsers.some(u => u.username && u.username.toLowerCase() === cleanUsername);
+          if (usernameExists) {
+            throw new Error('Este nombre de usuario ya está registrado.');
           }
 
           const newUser = {
