@@ -1,0 +1,42 @@
+services:
+  # ── Frontend: AnimeGL React/Vite (Static Site) ──────────────
+  - type: web
+    name: animegl-v3
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # ── Backend: Anime1v API (Node.js Scraper) ──────────────────
+  - type: web
+    name: animegl-api
+    env: node
+    rootDir: anime-api
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: API_KEYS
+        value: animegl-secret-key-2024
+      - key: DISABLE_RATE_LIMIT
+        value: "true"
+      - key: DAILY_REQUEST_LIMIT
+        value: "99999"
+      - key: REQUEST_TIMEOUT_MS
+        value: "20000"
+      - key: DEFAULT_ANIME_DOMAIN
+        value: animeav1.com
+      - key: DEBUG_RESOLVER
+        value: "false"
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: "true"
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: /usr/bin/google-chrome-stable

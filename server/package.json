@@ -1,0 +1,15 @@
+{
+  "name": "animegl-backend",
+  "version": "3.0.0",
+  "description": "AnimeGL-v3.0 Backend with Auth & Database",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "sharp": "^0.35.3"
+  }
+}
