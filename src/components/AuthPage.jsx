@@ -53,16 +53,18 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           body: JSON.stringify(payload)
         });
 
-        if (res.ok) {
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
           const data = await res.json();
-          userData = data.user;
-          tokenData = data.token;
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          throw new Error(errData.error || 'Este correo electrónico o usuario ya está registrado.');
+          if (res.ok) {
+            userData = data.user;
+            tokenData = data.token;
+          } else {
+            throw new Error(data.error || 'Este correo electrónico o usuario ya está registrado.');
+          }
         }
       } catch (e) {
-        if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch')) {
+        if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch') && !e.message.includes('JSON') && !e.message.includes('token')) {
           throw e;
         }
         console.warn('Backend offline, using local database auth');
@@ -71,11 +73,12 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
       // LocalStorage client fallback
       if (!userData) {
         const storedUsers = JSON.parse(localStorage.getItem('animegl_local_users') || '[]');
+        const activeUser = JSON.parse(localStorage.getItem('animegl_user') || 'null');
 
         if (isLogin) {
           const searchInput = email.trim().toLowerCase();
           const foundUser = storedUsers.find(
-            u => (u.email.toLowerCase() === searchInput || u.username.toLowerCase() === searchInput) && u.password === password
+            u => (u.email && u.email.toLowerCase() === searchInput || u.username && u.username.toLowerCase() === searchInput) && u.password === password
           );
 
           if (!foundUser) {
@@ -93,12 +96,16 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
             throw new Error('Por favor completa todos los campos.');
           }
 
-          const emailExists = storedUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail);
+          const emailExists = storedUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail) ||
+                            (activeUser && activeUser.email && activeUser.email.toLowerCase() === cleanEmail);
+
           if (emailExists) {
             throw new Error('Este correo electrónico ya está registrado. Por favor inicia sesión.');
           }
 
-          const usernameExists = storedUsers.some(u => u.username && u.username.toLowerCase() === cleanUsername);
+          const usernameExists = storedUsers.some(u => u.username && u.username.toLowerCase() === cleanUsername) ||
+                               (activeUser && activeUser.username && activeUser.username.toLowerCase() === cleanUsername);
+
           if (usernameExists) {
             throw new Error('Este nombre de usuario ya está registrado.');
           }
