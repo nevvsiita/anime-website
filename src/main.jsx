@@ -32,62 +32,55 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div 
-          onClick={this.handleReset}
           style={{
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             minHeight: '100vh',
             background: 'radial-gradient(circle at 50% 50%, #160b26 0%, #09090e 75%)',
-            position: 'relative',
-            overflow: 'hidden',
-            cursor: 'pointer'
+            color: '#fff',
+            fontFamily: 'var(--font-baloo), system-ui, sans-serif',
+            padding: '2rem',
+            textAlign: 'center'
           }}
         >
-          {/* Ambient Glow background */}
           <div style={{
-            position: 'absolute',
-            width: '280px',
-            height: '280px',
-            background: 'radial-gradient(circle, rgba(240, 171, 252, 0.2) 0%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(40px)',
-            pointerEvents: 'none',
-            animation: 'pulseGlow 2.5s ease-in-out infinite alternate'
-          }} />
-
-          {/* Minimalist Pure Spinning Circle Animation */}
-          <div style={{
-            position: 'relative',
-            width: '64px',
-            height: '64px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(240, 171, 252, 0.3)',
+            borderRadius: '24px',
+            padding: '2.5rem 2rem',
+            maxWidth: '460px',
+            width: '100%',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)'
           }}>
-            {/* Spinning Ring */}
-            <div style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              border: '3px solid rgba(240, 171, 252, 0.15)',
-              borderTopColor: '#f0abfc',
-              borderRightColor: '#c084fc',
-              animation: 'spinRing 0.9s linear infinite',
-              boxShadow: '0 0 25px rgba(240, 171, 252, 0.45)'
-            }} />
-          </div>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🌸</div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.8rem', color: '#f0abfc' }}>
+              AnimeGL v3.0
+            </h2>
+            <p style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.75)', marginBottom: '1.8rem', lineHeight: '1.5' }}>
+              Se ha detectado un pequeño error de carga. Haz clic abajo para reiniciar la aplicación.
+            </p>
 
-          <style>{`
-            @keyframes spinRing {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-            @keyframes pulseGlow {
-              0% { transform: scale(0.85); opacity: 0.4; }
-              100% { transform: scale(1.1); opacity: 0.8; }
-            }
-          `}</style>
+            <button 
+              onClick={this.handleReset}
+              style={{
+                background: 'linear-gradient(135deg, #f0abfc 0%, #a78bfa 100%)',
+                color: '#090718',
+                fontWeight: 800,
+                border: 'none',
+                padding: '0.85rem 1.8rem',
+                borderRadius: '9999px',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                boxShadow: '0 0 20px rgba(240, 171, 252, 0.45)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {this.state.isReloading ? 'Cargando...' : '🔄 Reiniciar Aplicación'}
+            </button>
+          </div>
         </div>
       );
     }

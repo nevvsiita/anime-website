@@ -3,7 +3,7 @@ import { TRANSLATIONS } from '../data/translations.js';
 import { LANGS } from '../data/languages.jsx';
 
 export default function AuthPage({ onAuthSuccess, initialMode = 'register', currentLang = 'es', onLangChange }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [isLogin, setIsLogin] = useState(initialMode === 'login');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -264,78 +264,24 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           {t.disclaimerText || 'No comprobado científicamente, pero creemos en ti.'}
         </p>
 
-        {/* Flat Glass Expandable Button */}
+        {/* Glass Auth Card */}
         <div 
-          onClick={() => !isExpanded && setIsExpanded(true)}
           style={{
             position: 'relative',
-            background: isExpanded 
-              ? 'rgba(14, 10, 26, 0.95)' 
-              : '#6571D6',
-            border: isExpanded ? '1px solid rgba(255, 255, 255, 0.12)' : 'none',
+            background: 'rgba(14, 10, 26, 0.95)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
             backdropFilter: 'blur(25px)',
             WebkitBackdropFilter: 'blur(25px)',
-            borderRadius: isExpanded ? '24px' : '9999px',
-            padding: isExpanded ? '28px 32px 36px 32px' : '8px 20px',
+            borderRadius: '24px',
+            padding: '28px 32px 36px 32px',
             width: '100%',
-            maxWidth: isExpanded ? '440px' : '230px',
+            maxWidth: '440px',
             marginTop: '16px',
-            boxShadow: isExpanded ? '0 20px 60px rgba(0, 0, 0, 0.6)' : 'none',
-            cursor: !isExpanded ? 'pointer' : 'default',
-            transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            overflow: isExpanded ? 'visible' : 'hidden'
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)',
+            overflow: 'visible'
           }}
         >
-          {/* Minimize Close Button */}
-          {isExpanded && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsExpanded(false);
-              }}
-              style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: 'rgba(255, 255, 255, 0.75)',
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                fontWeight: 700,
-                transition: 'all 0.2s ease',
-                zIndex: 10
-              }}
-              title="Minimizar"
-            >
-              ✕
-            </button>
-          )}
-
-          {!isExpanded ? (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.4rem',
-              color: 'white',
-              fontFamily: 'var(--font-baloo)',
-              fontSize: '0.88rem',
-              fontWeight: 800,
-              letterSpacing: '0.01em',
-              whiteSpace: 'nowrap'
-            }}>
-              <span>{t.signInOrRegister || 'Registrarse / Iniciar Sesión'}</span>
-            </div>
-          ) : (
-            <>
-              <h2 style={{
+          <h2 style={{
                 fontSize: '1.85rem',
                 fontWeight: 800,
                 marginBottom: '26px',
@@ -506,8 +452,6 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
               {isLogin ? (t.dontHaveAccount || '¿No tienes cuenta? Regístrate') : (t.alreadyHaveAccount || '¿Ya tienes cuenta? Inicia sesión')}
             </a>
           </div>
-            </>
-          )}
         </div>
       </div>
 

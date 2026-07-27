@@ -20,29 +20,38 @@ function CustomUserVideoIntro({ onComplete }) {
   const canvasRef = useRef(null);
   const [fadeOut, setFadeOut] = useState(false);
 
+  const handleEnded = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      if (onComplete) onComplete();
+    }, 500);
+  };
+
   useEffect(() => {
     let animId;
     let reverseInterval;
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    if (!video || !canvas) return;
+    if (!video || !canvas) {
+      handleEnded();
+      return;
+    }
 
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
     // Handle reverse playback
     const startReversePlayback = () => {
-      if (!video.duration) return;
+      if (!video || !video.duration) return;
       video.pause();
       video.currentTime = video.duration;
 
       const step = 0.033; // FPS step
       reverseInterval = setInterval(() => {
-        if (video.currentTime > step) {
+        if (video && video.currentTime > step) {
           video.currentTime -= step;
         } else {
           clearInterval(reverseInterval);
-          setFadeOut(true);
-          setTimeout(onComplete, 500);
+          handleEnded();
         }
       }, 33);
     };
@@ -51,7 +60,7 @@ function CustomUserVideoIntro({ onComplete }) {
     if (video.duration) startReversePlayback();
 
     const renderLoop = () => {
-      if (video.videoWidth && video.videoHeight) {
+      if (video && video.videoWidth && video.videoHeight) {
         if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
@@ -91,11 +100,10 @@ function CustomUserVideoIntro({ onComplete }) {
 
     animId = requestAnimationFrame(renderLoop);
 
-    // Fallback timer
+    // Fallback safety timer
     const timer = setTimeout(() => {
-      setFadeOut(true);
-      setTimeout(onComplete, 600);
-    }, 4500);
+      handleEnded();
+    }, 3000);
 
     return () => {
       cancelAnimationFrame(animId);
@@ -127,6 +135,7 @@ function CustomUserVideoIntro({ onComplete }) {
         muted
         playsInline
         onEnded={handleEnded}
+        onError={handleEnded}
         style={{
           position: 'absolute',
           top: '-9999px',
@@ -481,6 +490,23 @@ export default function App() {
     .sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
     .slice(0, 10);
 
+  // Strict Unauthenticated User Gate: Block 100% of website content if not logged in
+  if (!user) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
+        <Starfield />
+        <div className="ambient-glow-1"></div>
+        <div className="ambient-glow-2"></div>
+        <AuthPage 
+          onAuthSuccess={handleAuthSuccess}
+          initialMode={authMode}
+          currentLang={currentLang}
+          onLangChange={setCurrentLang}
+        />
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
       {/* Dynamic Starfield Background */}
@@ -622,16 +648,6 @@ export default function App() {
       </main>
 
       <Footer currentLang={currentLang} />
-
-      {/* Full-Screen Register & Login Page (Shown when user is not logged in) */}
-      {!user && (
-        <AuthPage 
-          onAuthSuccess={handleAuthSuccess}
-          initialMode={authMode}
-          currentLang={currentLang}
-          onLangChange={setCurrentLang}
-        />
-      )}
 
       {/* Optional Header Auth Modal */}
       {user && isAuthOpen && (
