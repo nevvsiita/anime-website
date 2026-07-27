@@ -8,7 +8,7 @@ const PASTEL_PRESETS = [
   { name: 'Mint-Jade', value: 'linear-gradient(135deg, #ccfbf1 0%, #a7f3d0 100%)' }
 ];
 
-export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRemoveAnime, currentLang = 'es' }) {
+export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRemoveAnime, onResetCatalog, currentLang = 'es' }) {
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.es;
   const [title, setTitle] = useState('');
   const [synopsis, setSynopsis] = useState('');
@@ -227,7 +227,31 @@ export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRem
 
           {/* Current Catalog Management */}
           <div style={catalogManagerStyle}>
-            <h3 style={sectionTitleStyle}>{t.adminCatalog || 'Current Catalog'} ({catalog.length})</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+              <h3 style={{ ...sectionTitleStyle, marginBottom: 0 }}>{t.adminCatalog || 'Current Catalog'} ({catalog.length})</h3>
+              {onResetCatalog && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm('¿Deseas restaurar el catálogo por defecto? Se restablecerán los animes originales.')) {
+                      onResetCatalog();
+                    }
+                  }}
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.15)',
+                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                    color: '#fca5a5',
+                    borderRadius: '8px',
+                    padding: '4px 10px',
+                    fontSize: '0.78rem',
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  Restaurar Catálogo
+                </button>
+              )}
+            </div>
             <div style={catalogListStyle}>
               {catalog.map((anime) => (
                 <div key={anime.id} style={catalogItemStyle}>

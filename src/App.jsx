@@ -221,8 +221,19 @@ export default function App() {
     localStorage.setItem('animegl_lang', currentLang);
   }, [currentLang]);
 
-  // Catalog initialization with 100% fresh official database
-  const [catalog, setCatalog] = useState(() => animeData);
+  // Catalog initialization with persistent storage support
+  const [catalog, setCatalog] = useState(() => {
+    try {
+      const saved = localStorage.getItem('animegl_custom_catalog');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {}
+    return animeData;
+  });
 
   // Localized catalog for current selected language
   const localizedCatalog = catalog
@@ -507,6 +518,14 @@ export default function App() {
     );
   }
 
+  // Reset catalog to original default state
+  const handleResetCatalog = () => {
+    try {
+      localStorage.removeItem('animegl_custom_catalog');
+    } catch {}
+    setCatalog(animeData);
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
       {/* Dynamic Starfield Background */}
@@ -667,6 +686,8 @@ export default function App() {
         catalog={catalog}
         onAddAnime={handleAddAnime}
         onRemoveAnime={handleRemoveAnime}
+        onResetCatalog={handleResetCatalog}
+        currentLang={currentLang}
       />
 
       {/* Custom User Video Project 5.mp4 Intro */}
