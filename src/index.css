@@ -37,6 +37,52 @@ html, body {
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Auth Form Floating Labels Fix */
+.auth-input-group {
+  position: relative;
+  width: 100%;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 22px 14px 6px 14px !important;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff !important;
+  font-size: 0.98rem;
+  font-family: var(--font-baloo);
+  outline: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  border-color: #6571d6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px rgba(101, 113, 214, 0.3);
+}
+
+.auth-label {
+  position: absolute;
+  left: 14px;
+  top: 15px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.88rem;
+  font-family: var(--font-baloo);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  transform-origin: left top;
+}
+
+.auth-input:focus ~ .auth-label,
+.auth-input:not(:placeholder-shown) ~ .auth-label {
+  top: 5px;
+  font-size: 0.72rem;
+  color: #aeb8ff;
+  font-weight: 700;
+}
+
 /* Rounded Language Selector Button & Dropdown Styles */
 .lang-widget-container {
   position: relative;

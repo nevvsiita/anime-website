@@ -332,44 +332,44 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           {/* Form */}
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {!isLogin && (
-              <div style={{ position: 'relative', width: '100%' }}>
+              <div className="auth-input-group">
                 <input
                   type="text"
                   required
                   placeholder=" "
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  style={inputStyle}
+                  className="auth-input"
                   id="regUser"
                 />
-                <label htmlFor="regUser" style={labelStyle}>{t.usernameLabel || 'Nombre de usuario'}</label>
+                <label htmlFor="regUser" className="auth-label">{t.usernameLabel || 'Nombre de usuario'}</label>
               </div>
             )}
 
-            <div style={{ position: 'relative', width: '100%' }}>
+            <div className="auth-input-group">
               <input
                 type="text"
                 required
                 placeholder=" "
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={inputStyle}
+                className="auth-input"
                 id="loginEmail"
               />
-              <label htmlFor="loginEmail" style={labelStyle}>{t.emailLabel || 'Correo electrónico'}</label>
+              <label htmlFor="loginEmail" className="auth-label">{t.emailLabel || 'Correo electrónico'}</label>
             </div>
 
-            <div style={{ position: 'relative', width: '100%' }}>
+            <div className="auth-input-group">
               <input
                 type="password"
                 required
                 placeholder=" "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={inputStyle}
+                className="auth-input"
                 id="loginPassword"
               />
-              <label htmlFor="loginPassword" style={labelStyle}>{t.passwordLabel || 'Contraseña'}</label>
+              <label htmlFor="loginPassword" className="auth-label">{t.passwordLabel || 'Contraseña'}</label>
             </div>
 
             <button
