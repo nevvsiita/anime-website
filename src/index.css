@@ -675,28 +675,28 @@ html, body {
   box-shadow: var(--shadow-neon-hover);
 }
 
-/* Featured Anime Large Poster Card (Right Side of Hero Banner) */
+/* Featured Anime Large Poster Card (Right Side of Hero Banner with Floating Animation) */
 .hero-poster-card {
   position: absolute;
-  right: 3rem;
+  right: 3.5rem;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  width: 220px;
-  height: 315px;
-  border-radius: 16px;
+  width: 235px;
+  height: 335px;
+  border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
-  border: 2px solid rgba(240, 171, 252, 0.45);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75), 0 0 30px rgba(240, 171, 252, 0.3);
+  border: 2px solid rgba(240, 171, 252, 0.55);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 35px rgba(240, 171, 252, 0.4);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: heroPosterPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: heroFloatCover 6s ease-in-out infinite alternate;
 }
 
 .hero-poster-card:hover {
-  transform: translateY(-50%) scale(1.04);
+  transform: translateY(-56%) scale(1.05);
   border-color: var(--fuchsia-main);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 45px rgba(240, 171, 252, 0.55);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.95), 0 0 50px rgba(240, 171, 252, 0.65);
 }
 
 .hero-poster-img {
@@ -708,7 +708,7 @@ html, body {
 }
 
 .hero-poster-card:hover .hero-poster-img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .hero-poster-overlay {
@@ -716,30 +716,29 @@ html, body {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1rem 0.8rem 0.6rem;
-  background: linear-gradient(to top, rgba(9, 9, 14, 0.95) 0%, transparent 100%);
+  padding: 1.2rem 0.9rem 0.7rem;
+  background: linear-gradient(to top, rgba(9, 9, 14, 0.96) 0%, transparent 100%);
   display: flex;
   align-items: flex-end;
 }
 
 .hero-poster-title {
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 800;
   line-height: 1.2;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
-@keyframes heroPosterPop {
+@keyframes heroFloatCover {
   0% {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.88);
-    filter: blur(8px);
+    transform: translateY(-50%) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-57%) rotate(1deg);
   }
   100% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-    filter: blur(0);
+    transform: translateY(-47%) rotate(-0.5deg);
   }
 }
 
