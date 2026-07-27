@@ -85,7 +85,7 @@ export default function AnimeRow({ title, tag, animes, onWatch, favorites, onTog
               onToggleFavorite={onToggleFavorite}
             />
           ))}
-          <div className="row-spacer"></div>
+          <div className="row-spacer end-spacer"></div>
         </div>
 
         {/* Right Arrow */}
