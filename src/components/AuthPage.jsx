@@ -364,7 +364,7 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <form onSubmit={handleSubmit} autoComplete="on" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {!isLogin && (
               <div className="auth-input-group">
                 <input
@@ -375,6 +375,8 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
                   onChange={(e) => setUsername(e.target.value)}
                   className="auth-input"
                   id="regUser"
+                  name="username"
+                  autoComplete="username"
                 />
                 <label htmlFor="regUser" className="auth-label">{t.usernameLabel || 'Nombre de usuario'}</label>
               </div>
@@ -382,13 +384,15 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
 
             <div className="auth-input-group">
               <input
-                type="text"
+                type="email"
                 required
                 placeholder=" "
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="auth-input"
                 id="loginEmail"
+                name="email"
+                autoComplete="email"
               />
               <label htmlFor="loginEmail" className="auth-label">{t.emailLabel || 'Correo electrónico'}</label>
             </div>
@@ -402,6 +406,8 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
                 onChange={(e) => setPassword(e.target.value)}
                 className="auth-input"
                 id="loginPassword"
+                name="password"
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
               />
               <label htmlFor="loginPassword" className="auth-label">{t.passwordLabel || 'Contraseña'}</label>
             </div>

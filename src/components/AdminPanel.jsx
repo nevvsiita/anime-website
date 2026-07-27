@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TRANSLATIONS } from '../data/translations.js';
 
 const PASTEL_PRESETS = [
   { name: 'Pink-Purple', value: 'linear-gradient(135deg, #fbcfe8 0%, #c084fc 100%)' },
@@ -7,7 +8,8 @@ const PASTEL_PRESETS = [
   { name: 'Mint-Jade', value: 'linear-gradient(135deg, #ccfbf1 0%, #a7f3d0 100%)' }
 ];
 
-export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRemoveAnime }) {
+export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRemoveAnime, currentLang = 'es' }) {
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.es;
   const [title, setTitle] = useState('');
   const [synopsis, setSynopsis] = useState('');
   const [rating, setRating] = useState('4.8');
@@ -25,7 +27,7 @@ export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRem
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim() || !synopsis.trim() || !studio.trim()) {
-      alert('Please fill out Title, Synopsis, and Studio.');
+      alert(t.adminFillRequired || 'Please fill out Title, Synopsis, and Studio.');
       return;
     }
 
@@ -63,7 +65,7 @@ export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRem
     setTitle('');
     setSynopsis('');
     setStudio('');
-    alert('Anime added to custom catalog successfully!');
+    alert(t.adminAddedSuccess || 'Anime added to custom catalog successfully!');
   };
 
   return (
@@ -73,13 +75,187 @@ export default function AdminPanel({ isOpen, onClose, catalog, onAddAnime, onRem
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <img src="/logo.png" alt="AnimeGL" style={{ height: '48px', width: 'auto' }} />
             <span className="gradient-text" style={{ fontSize: '1.2rem', fontWeight: 800 }}>
-              Admin Panel
+              {t.adminPanelTitle || 'Admin Panel'}
             </span>
           </div>
           <button style={closeButtonStyle} onClick={onClose}>✕</button>
         </div>
 
         <div className="admin-panel-body" style={modalBodyStyle}>
+          {/* Add Anime Form */}
+          <form onSubmit={handleSubmit} style={formStyle}>
+            <h3 style={sectionTitleStyle}>{t.adminAddAnime || 'Add Anime'}</h3>
+            
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminTitle || 'Title *'}</label>
+              <input 
+                type="text" 
+                style={inputStyle} 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                placeholder={t.adminTitlePlaceholder || 'e.g. Chainsaw Man'} 
+                required 
+              />
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminCoverUrl || 'Cover Poster Image URL'}</label>
+              <input 
+                type="url" 
+                style={inputStyle} 
+                value={coverUrl} 
+                onChange={(e) => setCoverUrl(e.target.value)} 
+                placeholder={t.adminCoverPlaceholder || 'e.g. https://cdn.myanimelist.net/...'} 
+              />
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminStudio || 'Studio *'}</label>
+              <input 
+                type="text" 
+                style={inputStyle} 
+                value={studio} 
+                onChange={(e) => setStudio(e.target.value)} 
+                placeholder={t.adminStudioPlaceholder || 'e.g. MAPPA'} 
+                required 
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <div style={{ ...formGroupStyle, flex: 1 }}>
+                <label style={labelStyle}>{t.adminMalId || 'MyAnimeList ID *'}</label>
+                <input 
+                  type="text" 
+                  style={inputStyle} 
+                  value={malId} 
+                  onChange={(e) => setMalId(e.target.value)} 
+                  placeholder="e.g. 50265" 
+                  required 
+                />
+              </div>
+              <div style={{ ...formGroupStyle, flex: 1, flexDirection: 'row', alignItems: 'center', gap: '0.5rem', paddingTop: '1.25rem' }}>
+                <input 
+                  type="checkbox" 
+                  id="isAdminMovie"
+                  checked={isMovie} 
+                  onChange={(e) => setIsMovie(e.target.checked)} 
+                  style={{ cursor: 'pointer' }}
+                />
+                <label htmlFor="isAdminMovie" style={{ ...labelStyle, cursor: 'pointer' }}>{t.adminIsMovie || 'Is Movie?'}</label>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <div style={{ ...formGroupStyle, flex: 1 }}>
+                <label style={labelStyle}>{t.adminRating || 'Rating'}</label>
+                <input 
+                  type="text" 
+                  style={inputStyle} 
+                  value={rating} 
+                  onChange={(e) => setRating(e.target.value)} 
+                  placeholder="e.g. 4.8" 
+                />
+              </div>
+              <div style={{ ...formGroupStyle, flex: 1 }}>
+                <label style={labelStyle}>{t.adminYear || 'Release Year'}</label>
+                <input 
+                  type="text" 
+                  style={inputStyle} 
+                  value={year} 
+                  onChange={(e) => setYear(e.target.value)} 
+                  placeholder="e.g. 2026" 
+                />
+              </div>
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminGenres || 'Genres (comma-separated)'}</label>
+              <input 
+                type="text" 
+                style={inputStyle} 
+                value={genresText} 
+                onChange={(e) => setGenresText(e.target.value)} 
+                placeholder={t.adminGenresPlaceholder || 'e.g. Action, Fantasy, Shonen'} 
+              />
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminYoutubeId || 'YouTube Trailer ID'}</label>
+              <input 
+                type="text" 
+                style={inputStyle} 
+                value={youtubeId} 
+                onChange={(e) => setYoutubeId(e.target.value)} 
+                placeholder="e.g. OLg84xA4lgo" 
+              />
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminGradient || 'Pastel Card Gradient Theme'}</label>
+              <div style={presetGridStyle}>
+                {PASTEL_PRESETS.map((preset) => (
+                  <button
+                    key={preset.name}
+                    type="button"
+                    style={{
+                      ...presetBtnStyle,
+                      background: preset.value,
+                      border: selectedGradient === preset.value ? '2px solid white' : '1px solid rgba(255,255,255,0.1)'
+                    }}
+                    onClick={() => setSelectedGradient(preset.value)}
+                    title={preset.name}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>{t.adminSynopsis || 'Synopsis *'}</label>
+              <textarea 
+                style={{ ...inputStyle, height: '80px', resize: 'none' }} 
+                value={synopsis} 
+                onChange={(e) => setSynopsis(e.target.value)} 
+                placeholder={t.adminSynopsisPlaceholder || 'Enter anime synopsis details...'} 
+                required 
+              />
+            </div>
+
+            <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+              {t.adminAddBtn || 'Add to Catalog'}
+            </button>
+          </form>
+
+          {/* Current Catalog Management */}
+          <div style={catalogManagerStyle}>
+            <h3 style={sectionTitleStyle}>{t.adminCatalog || 'Current Catalog'} ({catalog.length})</h3>
+            <div style={catalogListStyle}>
+              {catalog.map((anime) => (
+                <div key={anime.id} style={catalogItemStyle}>
+                  <div style={{ ...itemColorIndicatorStyle, background: anime.gradient }}></div>
+                  <div style={itemInfoStyle}>
+                    <div style={itemTitleStyle}>{anime.title}</div>
+                    <div style={itemMetaStyle}>{anime.studio} • {anime.year}</div>
+                  </div>
+                  {catalog.length > 2 && (
+                    <button 
+                      style={removeBtnStyle} 
+                      onClick={() => onRemoveAnime(anime.id)}
+                      title={t.adminRemoveTitle || 'Remove from Catalog'}
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Inline CSS Styles for absolute styling control
           {/* Add Anime Form */}
           <form onSubmit={handleSubmit} style={formStyle}>
             <h3 style={sectionTitleStyle}>Add Custom Anime</h3>

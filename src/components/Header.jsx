@@ -188,12 +188,14 @@ export default function Header({
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.email}</div>
                   </div>
                   <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', margin: '0.25rem 0' }}></div>
-                  <button
-                    style={dropdownItemStyle}
-                    onClick={() => { setDropdownOpen(false); onAdminClick(); }}
-                  >
-                    🛠️ {t.adminSettings}
-                  </button>
+                  {user?.email === 'nevxitah@gmail.com' && (
+                    <button
+                      style={dropdownItemStyle}
+                      onClick={() => { setDropdownOpen(false); onAdminClick(); }}
+                    >
+                      🛠️ {t.adminSettings}
+                    </button>
+                  )}
                   <button
                     style={{ ...dropdownItemStyle, color: '#ef4444' }}
                     onClick={() => { setDropdownOpen(false); onSignOutClick(); }}
