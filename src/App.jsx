@@ -190,6 +190,33 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeGenre, setActiveGenre] = useState('All');
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
+
+  // Strict Admin Authorization: Only nevxitah@gmail.com has admin privileges
+  const isAdmin = Boolean(
+    user && user.email && user.email.toLowerCase().trim() === 'nevxitah@gmail.com'
+  );
+
+  // Persistent Featured Banner selection (registered across page reloads for all users)
+  const [featuredAnimeId, setFeaturedAnimeId] = useState(() => {
+    try {
+      return localStorage.getItem('animegl_featured_id') || 'cyberpunk-edgerunners';
+    } catch {
+      return 'cyberpunk-edgerunners';
+    }
+  });
+
+  const handleSetFeaturedBanner = (animeId) => {
+    if (!isAdmin) return;
+    setFeaturedAnimeId(animeId);
+    try {
+      localStorage.setItem('animegl_featured_id', animeId);
+    } catch {}
+    const foundAnime = catalog.find(a => a.id === animeId);
+    const animeTitle = foundAnime ? foundAnime.title : animeId;
+    setToastMsg(`🌟 Banner principal fijado a: "${animeTitle}"`);
+    setTimeout(() => setToastMsg(''), 4000);
+  };
   
   // Force AuthModal to open if user is not authenticated yet
   const [isAuthOpen, setIsAuthOpen] = useState(!user);
@@ -353,11 +380,11 @@ export default function App() {
     };
   }, []);
 
-  // Secret Admin Key combination Easter Egg (type "agl" on keyboard to open panel)
+  // Secret Admin Key combination Easter Egg (type "agl" on keyboard to open panel - ONLY for nevxitah@gmail.com)
   useEffect(() => {
     let keyBuffer = '';
     const handleKeydown = (e) => {
-      // Don't trigger if user typing in input fields
+      if (!isAdmin) return;
       if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
       keyBuffer += e.key.toLowerCase();
       if (keyBuffer.length > 5) keyBuffer = keyBuffer.slice(-5);
@@ -368,7 +395,7 @@ export default function App() {
     };
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
-  }, []);
+  }, [isAdmin]);
 
   // Handle Watch action
   const handleWatch = (anime, episodeNum = 1) => {
@@ -497,7 +524,17 @@ export default function App() {
   // Filtered lists
   const filteredAnimes = getFilteredAnimes();
   const favoriteAnimes = localizedCatalog.filter(anime => favorites.includes(anime.id));
-  const featuredAnime = localizedCatalog.find(a => a.id === 'cyberpunk-edgerunners') || localizedCatalog[0] || null;
+  
+  // Featured Anime (Customizable via right-click by nevxitah@gmail.com and saved in localStorage)
+  const featuredAnime = localizedCatalog.find(a => a.id === featuredAnimeId) || 
+                        localizedCatalog.find(a => a.id === 'cyberpunk-edgerunners') || 
+                        localizedCatalog[0] || null;
+
+  const featuredAnimesList = React.useMemo(() => {
+    if (!featuredAnime) return localizedCatalog.slice(0, 8);
+    const filtered = localizedCatalog.filter(a => a.id !== featuredAnime.id);
+    return [featuredAnime, ...filtered].slice(0, 8);
+  }, [localizedCatalog, featuredAnime]);
 
   // Category Shelf: Seguir Viendo (Continue Watching) mapped to catalog shows
   const continueWatchingAnimes = watchHistory
@@ -534,8 +571,10 @@ export default function App() {
   const handleResetCatalog = () => {
     try {
       localStorage.removeItem('animegl_custom_catalog');
+      localStorage.removeItem('animegl_featured_id');
     } catch {}
     setCatalog(animeData);
+    setFeaturedAnimeId('cyberpunk-edgerunners');
   };
 
   return (
@@ -570,7 +609,7 @@ export default function App() {
             {localizedCatalog.length > 0 && (
               <Hero 
                 featuredAnime={featuredAnime} 
-                featuredAnimes={localizedCatalog.slice(0, 8)}
+                featuredAnimes={featuredAnimesList}
                 onWatch={handleWatch} 
                 currentLang={currentLang}
               />
@@ -591,6 +630,8 @@ export default function App() {
                 onWatch={(anime) => handleWatch(anime, anime.lastWatchedEpisode)}
                 favorites={favorites}
                 onToggleFavorite={handleToggleFavorite}
+                isAdmin={isAdmin}
+                onSetFeaturedBanner={handleSetFeaturedBanner}
               />
             )}
 
@@ -602,6 +643,8 @@ export default function App() {
               onWatch={(anime) => handleWatch(anime, 1)}
               favorites={favorites}
               onToggleFavorite={handleToggleFavorite}
+              isAdmin={isAdmin}
+              onSetFeaturedBanner={handleSetFeaturedBanner}
             />
 
             {/* Shelf: Trending Shelf */}
@@ -612,6 +655,8 @@ export default function App() {
               onWatch={(anime) => handleWatch(anime, 1)}
               favorites={favorites}
               onToggleFavorite={handleToggleFavorite}
+              isAdmin={isAdmin}
+              onSetFeaturedBanner={handleSetFeaturedBanner}
             />
 
             {/* Shelf: My List (Favorites as horizontal slider shelf) */}
@@ -623,6 +668,8 @@ export default function App() {
                 onWatch={(anime) => handleWatch(anime, 1)}
                 favorites={favorites}
                 onToggleFavorite={handleToggleFavorite}
+                isAdmin={isAdmin}
+                onSetFeaturedBanner={handleSetFeaturedBanner}
               />
             )}
           </div>
@@ -643,6 +690,8 @@ export default function App() {
               onWatch={handleWatch}
               favorites={favorites}
               onToggleFavorite={handleToggleFavorite}
+              isAdmin={isAdmin}
+              onSetFeaturedBanner={handleSetFeaturedBanner}
             />
           </div>
         )}

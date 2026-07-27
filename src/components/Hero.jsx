@@ -128,7 +128,7 @@ export default function Hero({ featuredAnime, featuredAnimes = [], onWatch, curr
               <span>{t.watchNow}</span>
             </button>
 
-            {/* Visual Slide Position Indicators */}
+            {/* Visual Slide Position Indicators (Read-Only / Non-interactive) */}
             {slides.length > 1 && (
               <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', pointerEvents: 'none', userSelect: 'none' }}>
                 {slides.map((slide, idx) => (
@@ -147,21 +147,6 @@ export default function Hero({ featuredAnime, featuredAnimes = [], onWatch, curr
               </div>
             )}
           </div>
-        </div>
-
-        {/* Active Featured Anime Poster Cover on Right Side */}
-        <div 
-          key={activeAnime.id + '_cover'} 
-          className="hero-poster-card"
-          onClick={() => onWatch(activeAnime, 1)}
-          title={activeAnime.title}
-        >
-          <img 
-            src={activeAnime.coverUrl || activeAnime.backupCoverUrl} 
-            alt={activeAnime.title}
-            referrerPolicy="no-referrer"
-            className="hero-poster-img"
-          />
         </div>
 
         {/* Embedded Keyframes for Smooth Slide Right and 10s Progress Bar */}

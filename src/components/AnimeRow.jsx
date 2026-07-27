@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import AnimeCard from './AnimeCard';
 
-export default function AnimeRow({ title, tag, animes, onWatch, favorites, onToggleFavorite }) {
+export default function AnimeRow({ title, tag, animes, onWatch, favorites, onToggleFavorite, isAdmin, onSetFeaturedBanner }) {
   const rowRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -83,6 +83,8 @@ export default function AnimeRow({ title, tag, animes, onWatch, favorites, onTog
               onWatch={onWatch}
               isFavorite={Array.isArray(favorites) ? favorites.includes(anime.id) : false}
               onToggleFavorite={onToggleFavorite}
+              isAdmin={isAdmin}
+              onSetFeaturedBanner={onSetFeaturedBanner}
             />
           ))}
           <div className="row-spacer end-spacer"></div>

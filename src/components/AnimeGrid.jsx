@@ -1,7 +1,7 @@
 import React from 'react';
 import AnimeCard from './AnimeCard';
 
-export default function AnimeGrid({ animes, onWatch, favorites, onToggleFavorite, emptyMessage }) {
+export default function AnimeGrid({ animes, onWatch, favorites, onToggleFavorite, emptyMessage, isAdmin, onSetFeaturedBanner }) {
   const validAnimes = Array.isArray(animes) ? animes.filter(a => a && a.id) : [];
 
   if (validAnimes.length === 0) {
@@ -37,6 +37,8 @@ export default function AnimeGrid({ animes, onWatch, favorites, onToggleFavorite
           onWatch={onWatch}
           isFavorite={Array.isArray(favorites) ? favorites.includes(anime.id) : false}
           onToggleFavorite={onToggleFavorite}
+          isAdmin={isAdmin}
+          onSetFeaturedBanner={onSetFeaturedBanner}
         />
       ))}
     </div>
