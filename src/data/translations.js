@@ -65,7 +65,7 @@ export const TRANSLATIONS = {
     // Auth & Footer Translations
     taglinePrefix: 'Impresiona a tus amigos con este elegante',
     taglineSuffix: 'reproductor de anime en la nube. Es brillante, es moderno y te hace ver 10% más otaku.',
-    disclaimerText: '*No comprobado científicamente, pero creemos en ti.',
+    disclaimerText: 'No comprobado científicamente, pero creemos en ti.',
     usernameLabel: 'Nombre de usuario',
     emailLabel: 'Correo electrónico',
     passwordLabel: 'Contraseña',
@@ -141,7 +141,7 @@ export const TRANSLATIONS = {
     // Auth & Footer Translations
     taglinePrefix: 'Impress your friends with this sleek',
     taglineSuffix: 'cloud anime player. It\'s brilliant, modern, and makes you look 10% more otaku.',
-    disclaimerText: '*Not scientifically proven, but we believe in you.',
+    disclaimerText: 'Not scientifically proven, but we believe in you.',
     usernameLabel: 'Username',
     emailLabel: 'Email Address',
     passwordLabel: 'Password',
@@ -217,7 +217,7 @@ export const TRANSLATIONS = {
     // Auth & Footer Translations
     taglinePrefix: 'Impressiona els teus amics amb aquest elegant',
     taglineSuffix: 'reproductor d\'anime al núvol. És brillant, modern i et fa semblar un 10% més otaku.',
-    disclaimerText: '*No comprovat científicament, però creiem en tu.',
+    disclaimerText: 'No comprovat científicament, però creiem en tu.',
     usernameLabel: 'Nom d\'usuari',
     emailLabel: 'Correu electrònic',
     passwordLabel: 'Contrasenya',
@@ -293,7 +293,7 @@ export const TRANSLATIONS = {
     // Auth & Footer Translations
     taglinePrefix: 'Impressiona i tuoi amici con questo elegante',
     taglineSuffix: 'lettore anime nel cloud. È brillante, moderno e ti fa sembrare il 10% più otaku.',
-    disclaimerText: '*Non provato scientificamente, ma crediamo in te.',
+    disclaimerText: 'Non provato scientificamente, ma crediamo in te.',
     usernameLabel: 'Nome utente',
     emailLabel: 'Indirizzo e-mail',
     passwordLabel: 'Password',
@@ -369,7 +369,7 @@ export const TRANSLATIONS = {
     // Auth & Footer Translations
     taglinePrefix: 'Impressionnez vos amis avec ce lecteur anime élégant',
     taglineSuffix: 'dans le cloud. C\'est brillant, moderne et vous fait paraître 10% plus otaku.',
-    disclaimerText: '*Non prouvé scientifiquement, mais nous croyons en vous.',
+    disclaimerText: 'Non prouvé scientifiquement, mais nous croyons en vous.',
     usernameLabel: 'Nom d\'utilisateur',
     emailLabel: 'Adresse e-mail',
     passwordLabel: 'Mot de passe',

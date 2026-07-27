@@ -254,15 +254,24 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           </span>
           . {t.taglineSuffix || 'Es brillante, es moderno y te hace ver 10% más otaku.'}
         </div>
+        <p style={{
+          fontFamily: "'Inconsolata', monospace, sans-serif",
+          fontSize: '0.75rem',
+          color: 'rgba(255, 255, 255, 0.3)',
+          textAlign: 'center',
+          marginTop: '4px'
+        }}>
+          {t.disclaimerText || 'No comprobado científicamente, pero creemos en ti.'}
+        </p>
 
-        {/* Gifukai Style Sakura Expandable Button */}
+        {/* Flat Glass Expandable Button */}
         <div 
           onClick={() => !isExpanded && setIsExpanded(true)}
           style={{
             background: isExpanded 
               ? 'rgba(14, 10, 26, 0.88)' 
-              : 'linear-gradient(135deg, #6571d6 0%, #a78bfa 50%, #f0abfc 100%)',
-            border: isExpanded ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.4)',
+              : 'rgba(255, 255, 255, 0.08)',
+            border: isExpanded ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.25)',
             backdropFilter: 'blur(25px)',
             WebkitBackdropFilter: 'blur(25px)',
             borderRadius: isExpanded ? '24px' : '9999px',
@@ -270,9 +279,7 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
             width: '100%',
             maxWidth: isExpanded ? '440px' : '230px',
             marginTop: '16px',
-            boxShadow: isExpanded 
-              ? '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(167, 139, 250, 0.25)' 
-              : '0 0 25px rgba(101, 113, 214, 0.7), 0 8px 20px rgba(167, 139, 250, 0.45)',
+            boxShadow: isExpanded ? '0 20px 60px rgba(0, 0, 0, 0.6)' : 'none',
             cursor: !isExpanded ? 'pointer' : 'default',
             transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
             overflow: 'hidden'
