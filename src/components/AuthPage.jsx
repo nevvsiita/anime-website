@@ -384,15 +384,15 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
 
             <div className="auth-input-group">
               <input
-                type="email"
+                type="text"
                 required
                 placeholder=" "
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="auth-input"
                 id="loginEmail"
-                name="email"
-                autoComplete="email"
+                name="username"
+                autoComplete="username"
               />
               <label htmlFor="loginEmail" className="auth-label">{t.emailLabel || 'Correo electrónico'}</label>
             </div>
