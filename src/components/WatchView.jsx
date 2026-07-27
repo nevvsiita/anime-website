@@ -450,32 +450,6 @@ export default function WatchView({
 
         {/* Playlist & Episode Sidebar */}
         <div className="sidebar-col">
-          {/* Clean Floating Anime Poster Cover */}
-          <div 
-            className="glass neon-border animate-float"
-            style={{
-              width: '210px',
-              height: '300px',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              margin: '0 auto 1.25rem 0.75rem',
-              boxShadow: '0 15px 35px rgba(0, 0, 0, 0.85), 0 0 30px rgba(240, 171, 252, 0.4)',
-              border: '2px solid rgba(240, 171, 252, 0.55)'
-            }}
-          >
-            <img 
-              src={anime.coverUrl || anime.backupCoverUrl} 
-              alt={anime.title}
-              referrerPolicy="no-referrer"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block'
-              }}
-            />
-          </div>
-
           <div className="episodes-card glass neon-border">
             <h3>{anime.title} — {anime.isMovie ? (t.movie || 'Película') : t.episodes}</h3>
             <div className="episode-list">
