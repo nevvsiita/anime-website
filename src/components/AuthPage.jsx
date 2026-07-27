@@ -275,14 +275,14 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
             backdropFilter: 'blur(25px)',
             WebkitBackdropFilter: 'blur(25px)',
             borderRadius: isExpanded ? '24px' : '9999px',
-            padding: isExpanded ? '28px 32px' : '8px 20px',
+            padding: isExpanded ? '28px 32px 36px 32px' : '8px 20px',
             width: '100%',
             maxWidth: isExpanded ? '440px' : '230px',
             marginTop: '16px',
             boxShadow: isExpanded ? '0 20px 60px rgba(0, 0, 0, 0.6)' : 'none',
             cursor: !isExpanded ? 'pointer' : 'default',
             transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            overflow: 'hidden'
+            overflow: isExpanded ? 'visible' : 'hidden'
           }}
         >
           {!isExpanded ? (
@@ -441,16 +441,27 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           {/* Toggle Mode Footer Link */}
           <div style={{
             marginTop: '22px',
-            fontSize: '0.9rem',
-            color: 'rgba(255, 255, 255, 0.45)',
+            fontSize: '0.92rem',
+            color: 'rgba(255, 255, 255, 0.5)',
             display: 'flex',
-            gap: '6px',
-            justifyContent: 'center'
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            lineHeight: 1.5,
+            paddingBottom: '4px'
           }}>
             <a
               href="#toggle"
               onClick={(e) => { e.preventDefault(); setIsLogin(!isLogin); setErrorMsg(''); }}
-              style={{ color: '#8b95e8', textDecoration: 'none', fontWeight: 700 }}
+              style={{
+                color: '#9fa9ff',
+                textDecoration: 'none',
+                fontWeight: 700,
+                padding: '4px 8px',
+                borderRadius: '6px',
+                transition: 'all 0.2s ease',
+                display: 'inline-block'
+              }}
             >
               {isLogin ? (t.dontHaveAccount || '¿No tienes cuenta? Regístrate') : (t.alreadyHaveAccount || '¿Ya tienes cuenta? Inicia sesión')}
             </a>
