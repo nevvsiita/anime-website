@@ -254,15 +254,6 @@ export default function AuthPage({ onAuthSuccess, initialMode = 'register', curr
           </span>
           . {t.taglineSuffix || 'Es brillante, es moderno y te hace ver 10% más otaku.'}
         </div>
-        <p style={{
-          fontFamily: "'Inconsolata', monospace, sans-serif",
-          fontSize: '0.75rem',
-          color: 'rgba(255, 255, 255, 0.3)',
-          textAlign: 'center',
-          marginTop: '4px'
-        }}>
-          {t.disclaimerText || '*No comprobado científicamente, pero creemos en ti.'}
-        </p>
 
         {/* Gifukai Style Sakura Expandable Button */}
         <div 
